@@ -40,18 +40,18 @@ def visible_vertices(point, graph, origin=None, destination=None):
         
         is_visible = False
 
-        # Ne kolinearne tacke
+
         if prev is None or ccw(point, prev, p) != COLLINEAR or not on_segment(point, prev, p):
             if len(open_edges) == 0:
                 is_visible = True
             elif not edge_intersect(point, p, open_edges.smallest()):
                 is_visible = True
 
-        # Kolinearne tacke ali prethodna nije vidljiva iz p
+
         elif not prev_visible:
             is_visible = False
 
-        # Kolinearne tacke ali je prethodna vidljiva iz p
+
         else:
             is_visible = True
             for edge in open_edges:
@@ -61,13 +61,13 @@ def visible_vertices(point, graph, origin=None, destination=None):
             if is_visible and edge_in_polygon(prev, p, graph):
                     is_visible = False
 
-        # Provera da li je vidljiva tacka unutar nekog poligona
+
         if is_visible and p not in graph.get_adjacent_points(point):
             is_visible = not edge_in_polygon(point, p, graph)
 
         if is_visible: visible.append(p)
 
-        # Dodaj edge u stablo
+
         for edge in graph[p]:
             if (point not in edge) and ccw(point, p, edge.get_adjacent(p)) == CCW:
                 open_edges.insert(point, p, edge)
@@ -79,7 +79,7 @@ def visible_vertices(point, graph, origin=None, destination=None):
 
 
 def polygon_crossing(p1, poly_edges):
-    """Vraća true ako je tačka p1 deo poligona."""
+
     p2 = Point(INF, p1.y)
     intersect_count = 0
     for edge in poly_edges:
@@ -102,7 +102,7 @@ def polygon_crossing(p1, poly_edges):
 
 
 def edge_in_polygon(p1, p2, graph):
-    """Vraća true ako je duž p1-p2 deo nekog poligona iz grafa."""
+
     if p1.polygon_id != p2.polygon_id:
         return False
     if p1.polygon_id == -1 or p2.polygon_id == -1:
@@ -112,19 +112,19 @@ def edge_in_polygon(p1, p2, graph):
 
 
 def point_in_polygon(p, graph):
-    """Vraća true ako je tačka p u nekom od poligona."""
+
     for polygon in graph.polygons:
         if polygon_crossing(p, graph.polygons[polygon]):
             return polygon
     return -1
 
 def edge_distance(p1, p2):
-    """Vraca Euklidsku distancu izmedju dve tacke."""
+
     return sqrt((p2.x - p1.x)**2 + (p2.y - p1.y)**2)
 
 
 def intersect_point(p1, p2, edge):
-    """Vraca tacku u kojoj duž p1-p2 seče edge."""
+
     if p1 in edge: return p1
     if p2 in edge: return p2
     if edge.p1.x == edge.p2.x:
@@ -151,7 +151,7 @@ def intersect_point(p1, p2, edge):
 
 
 def point_edge_distance(p1, p2, edge):
-    """Vraca Euklidsku distancu od p1 do mesta gde seče edge ako prolazi kroz p2."""
+
     ip = intersect_point(p1, p2, edge)
     if ip is not None:
         return edge_distance(p1, ip)
@@ -159,7 +159,7 @@ def point_edge_distance(p1, p2, edge):
 
 
 def angle(center, point):
-    """Vraća ugao u radijanima između centra i pointa. """
+
     dx = point.x - center.x
     dy = point.y - center.y
     if dx == 0:
@@ -178,7 +178,7 @@ def angle(center, point):
 
 
 def ccw(A, B, C):
-    """Vraca 1 if counter clockwise, -1 if clock wise, 0 if kolinearne """
+
     area = int(((B.x - A.x) * (C.y - A.y) - (B.y - A.y) * (C.x - A.x))*T)/T2
     if area > 0: return 1
     if area < 0: return -1
@@ -186,7 +186,7 @@ def ccw(A, B, C):
 
 
 def on_segment(p, q, r):
-    """Vraca true ako q lezi na duzi p-r."""
+
     if (q.x <= max(p.x, r.x)) and (q.x >= min(p.x, r.x)):
         if (q.y <= max(p.y, r.y)) and (q.y >= min(p.y, r.y)):
             return True
@@ -194,7 +194,7 @@ def on_segment(p, q, r):
 
 
 def edge_intersect(p1, q1, edge):
-    """Vraca true ako duz p1-q1 sece edge."""
+
     p2 = edge.p1
     q2 = edge.p2
     o1 = ccw(p1, q1, p2)
@@ -222,12 +222,12 @@ class OpenEdges(object):
     def insert(self, p1, p2, edge):
         self._open_edges.insert(self._index(p1, p2, edge), edge)
 
-    """Vraća najlevlji list (prvi edge koji udara)"""
+
     def smallest(self):
         return self._open_edges[0]
 
     def _less_than(self, p1, p2, edge1, edge2):
-        """Vraca true ako je edge1 manje od edge2, false u suprotnom."""
+
         if edge1 == edge2:
             return False
         if not edge_intersect(p1, p2, edge2):
@@ -238,7 +238,7 @@ class OpenEdges(object):
             return False
         if edge1_dist < edge2_dist:
             return True
-        # Ako su udaljenosti iste moramo ugao da računamo
+
         if edge1_dist == edge2_dist:
             if edge1.p1 in edge2:
                 same_point = edge1.p1
