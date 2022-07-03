@@ -32,9 +32,9 @@ def draw_polygon(polygon, color, size, complete=True):
         p1 = p2
 
 
-def draw_visible_vertices(edges, color, size):
-    for edge in edges:
-        pygame.draw.line(gameDisplay, color, (edge.p1.x, edge.p1.y), (edge.p2.x, edge.p2.y), size)
+# def draw_visible_vertices(edges, color, size):
+#     for edge in edges:
+#         pygame.draw.line(gameDisplay, color, (edge.p1.x, edge.p1.y), (edge.p2.x, edge.p2.y), size)
 
 
 def draw_text(mode_txt, color, size, x, y):
@@ -212,8 +212,8 @@ def game_loop():
 
 
 if __name__ == "__main__":
-    gameDisplay.fill(white)
-    help_screen()
-    game_loop()
-    pygame.quit()
+    gameDisplay.fill(white) # initializare interfata
+    help_screen() # afisare meniu
+    game_loop() # activeaza/start optiunea de desenare/ setare puncte start/sfarsit
+    pygame.quit() # inchide programul
     quit()
